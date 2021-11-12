@@ -1177,8 +1177,8 @@ ON H.id = G.id
 where H.dependente=true and G.dependente=true
 group by Relacao;
 
-/*Exercicio 2*/
-
+/*Exercicio numero 2*/
+/*Maior Numero de Transacoes*/
 SELECT cliente.nome as Cliente, conta.numero as ContaNumero, count(id_cliente_conta)as MaiorNumeroTransacoes
 FROM (transacao
 JOIN cliente_conta
@@ -1189,6 +1189,7 @@ group by transacao.id_cliente_conta
 order by MaiorNumeroTransacoes desc
 limit 5;
 
+/*Menor Numero de Transacoes*/
 SELECT cliente.nome as Cliente, conta.numero as NroCuenta, count(id_cliente_conta)as MenorNumeroTransacoes
 FROM (transacao
 JOIN cliente_conta
@@ -1199,6 +1200,7 @@ group by transacao.id_cliente_conta
 order by MenorNumeroTransacoes
 limit 5;
 
+/*Exercicio numero 3*/
 SELECT cliente.nome as NomeClientes, conta.numero as NumerosDeCuenta,
 SUM(CASE 	WHEN id_tipo_transacao = 1 THEN valor 
     		WHEN id_tipo_transacao = 2 THEN (-1)*valor 
@@ -1213,6 +1215,7 @@ join conta on cliente_conta.id_conta = conta.id)
 
 Group by  id_cliente_conta;
 
+/*Termino 12/11/2021 Hora: 19:27 pm*/
 
 
 
