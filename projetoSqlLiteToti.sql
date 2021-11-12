@@ -1162,7 +1162,56 @@ ORDER BY id DESC
 LIMIT 5;
 
 
+/*Exercicio 1*/
 
+select H.nome as Relacao, G.nome as Depende
+from 
+(Select cliente.nome as nome, cliente_conta.id_conta as id, cliente_conta.dependente as dependente from cliente
+JOIN cliente_conta 
+ON Cliente.id = cliente_conta.id_cliente) as H
+JOIN
+(Select cliente.nome as nome, cliente_conta.id_conta as id, cliente_conta.dependente as dependente from cliente
+JOIN cliente_conta 
+ON Cliente.id = cliente_conta.id_conta) as G
+ON H.id = G.id
+where H.dependente=true and G.dependente=true
+group by Relacao;
+
+/*Exercicio 2*/
+
+SELECT cliente.nome as Cliente, conta.numero as ContaNumero, count(id_cliente_conta)as MaiorNumeroTransacoes
+FROM (transacao
+JOIN cliente_conta
+On cliente_conta.id_cliente = transacao.id_cliente_conta
+join cliente ON cliente.id = cliente_conta.id_cliente
+join conta on cliente_conta.id_conta = conta.id)
+group by transacao.id_cliente_conta
+order by MaiorNumeroTransacoes desc
+limit 5;
+
+SELECT cliente.nome as Cliente, conta.numero as NroCuenta, count(id_cliente_conta)as MenorNumeroTransacoes
+FROM (transacao
+JOIN cliente_conta
+On cliente_conta.id_cliente = transacao.id_cliente_conta
+join cliente ON cliente.id = cliente_conta.id_cliente
+join conta on cliente_conta.id_conta = conta.id)
+group by transacao.id_cliente_conta
+order by MenorNumeroTransacoes
+limit 5;
+
+SELECT cliente.nome as NomeClientes, conta.numero as NumerosDeCuenta,
+SUM(CASE 	WHEN id_tipo_transacao = 1 THEN valor 
+    		WHEN id_tipo_transacao = 2 THEN (-1)*valor 
+    		WHEN id_tipo_transacao = 3 THEN (-1)*valor  
+    		WHEN id_tipo_transacao = 4 THEN valor ELSE 0 END) as SaldoTotal
+
+from (transacao
+JOIN cliente_conta
+On cliente_conta.id_cliente = transacao.id_cliente_conta
+join cliente ON cliente.id = cliente_conta.id_cliente
+join conta on cliente_conta.id_conta = conta.id)
+
+Group by  id_cliente_conta;
 
 
 
